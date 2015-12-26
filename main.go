@@ -26,6 +26,7 @@ func main() {
 
 	// global config
 	g.ParseConfig(*cfg)
+	g.InitRpcClients()
 
 	cron.Collect()
 

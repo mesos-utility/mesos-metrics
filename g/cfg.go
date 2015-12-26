@@ -16,18 +16,12 @@ type HttpConfig struct {
 type TransferConfig struct {
 	Enable   bool   `json:"enable"`
 	Addr     string `json:"addr"`
-	Interval int    `json:"interval"`
+	Interval int64  `json:"interval"`
 	Timeout  int    `json:"timeout"`
 }
 
-type MasterConfig struct {
-	Enable   bool   `json:"enable"`
-	Apiurl   string `json:"apiurl"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type SlaveConfig struct {
+type ServiceConfig struct {
+	Type     string `json:"type"`
 	Enable   bool   `json:"enable"`
 	Apiurl   string `json:"apiurl"`
 	Username string `json:"username"`
@@ -35,11 +29,10 @@ type SlaveConfig struct {
 }
 
 type GlobalConfig struct {
-	Debug    bool            `json:"debug"`
-	Http     *HttpConfig     `json:"http"`
-	Transfer *TransferConfig `json:"transfer"`
-	Master   *MasterConfig   `json:"master"`
-	Slave    *SlaveConfig    `json:"slave"`
+	Debug    bool             `json:"debug"`
+	Http     *HttpConfig      `json:"http"`
+	Transfer *TransferConfig  `json:"transfer"`
+	Services []*ServiceConfig `json:"services"`
 }
 
 var (

@@ -21,60 +21,66 @@ func Collect() {
 		return
 	}
 
-	//for _, v := range funcs.Mappers {
-	//	go collect(int64(v.Interval), v.Fs)
-	//}
-	go collect()
+	go collect(g.Config().Services)
 }
 
-//func collect(sec int64, fns []func() []*model.MetricValue) {
-func collect() {
+func collect(sev []*g.ServiceConfig) {
 
-	gcfg := g.Config()
-	addr := gcfg.Master.Apiurl
-	hostname, _ := g.Hostname()
-
-	var interval int64 = 6
+	// start collect data for mesos cluster.
 	for {
 	REST:
+		var interval int64 = g.Config().Transfer.Interval
 		time.Sleep(time.Duration(interval) * time.Second)
-		resp, err := http.Get(addr)
+		hostname, err := g.Hostname()
 		if err != nil {
 			goto REST
-			//panic(err)
-		}
-		defer resp.Body.Close()
-
-		// read json http response
-		jsonDataFromHttp, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			goto REST
-			//panic(err)
 		}
 
-		var f interface{}
-		err = json.Unmarshal(jsonDataFromHttp, &f)
-		if err != nil {
-			goto REST
-			//panic(err)
-		}
-
-		now := time.Now().Unix()
-		m := f.(map[string]interface{})
-		for k, v := range m {
-			key := fmt.Sprintf("mesos.%s", strings.Replace(k, "/", ".", -1))
-
-			metric := &model.MetricValue{
-				Endpoint:  hostname,
-				Metric:    key,
-				Value:     v,
-				Timestamp: now,
-				Step:      interval,
-				Type:      "COUNTER",
-				Tags:      "mesos,master",
+		mvs := []*model.MetricValue{}
+		for _, srv := range g.Config().Services {
+			if !srv.Enable {
+				continue
 			}
 
-			fmt.Printf("%v\n", metric)
+			addr := srv.Apiurl
+			srvtype := srv.Type
+			resp, err := http.Get(addr)
+			if err != nil {
+				continue
+			}
+			defer resp.Body.Close()
+
+			// read json http response
+			jsonData, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				continue
+			}
+
+			var f interface{}
+			err = json.Unmarshal(jsonData, &f)
+			if err != nil {
+				continue
+			}
+
+			now := time.Now().Unix()
+			m := f.(map[string]interface{})
+			for k, v := range m {
+				key := fmt.Sprintf("mesos.%s", strings.Replace(k, "/", ".", -1))
+
+				metric := &model.MetricValue{
+					Endpoint:  hostname,
+					Metric:    key,
+					Value:     v,
+					Timestamp: now,
+					Step:      interval,
+					Type:      "GAUGE",
+					Tags:      srvtype,
+				}
+
+				mvs = append(mvs, metric)
+				//fmt.Printf("%v\n", metric)
+			}
 		}
+		g.SendToTransfer(mvs)
 	}
 }

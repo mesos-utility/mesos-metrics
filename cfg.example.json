@@ -5,21 +5,25 @@
         "listen": "0.0.0.0:1987"
     },
     "transfer": {
-        "enabled": true,
+        "enable": true,
         "addr": "127.0.0.1:8433",
         "interval": 6,
         "timeout": 1000
     },
-    "master": {
-        "enable": true,
-        "apiurl" : "http://127.0.0.1:5050/metrics/snapshot",
-        "username": "",
-        "password": ""
-    },
-    "slave": {
-        "enable": true,
-        "apiurl" : "http://127.0.0.1:5051/metrics/snapshot",
-        "username": "",
-        "password": ""
-    }
+    "services": [
+        {
+            "type": "master",
+            "enable": true,
+            "apiurl" : "http://127.0.0.1:5050/metrics/snapshot",
+            "username": "",
+            "password": ""
+        },
+        {
+            "type": "slave",
+            "enable": true,
+            "apiurl" : "http://127.0.0.1:5051/metrics/snapshot",
+            "username": "",
+            "password": ""
+        }
+    ]
 }

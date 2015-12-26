@@ -1,0 +1,13 @@
+# useless script
+g/git.go
+client.go
+
+# tmp files
+*.swp*
+var*
+
+# binary output
+mesos-metrics
+
+# cfg file
+cfg.json
