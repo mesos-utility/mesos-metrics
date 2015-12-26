@@ -30,7 +30,7 @@ func main() {
 	cron.Collect()
 
 	// http
-	mhttp.Start()
+	go mhttp.Start()
 
 	select {}
 }
