@@ -4,12 +4,20 @@ import (
 	"encoding/json"
 	"github.com/toolkits/file"
 	"log"
+	"os"
 	"sync"
 )
 
 type HttpConfig struct {
 	Enable bool   `json:"enable"`
 	Listen string `json:"listen"`
+}
+
+type TransferConfig struct {
+	Enable   bool   `json:"enable"`
+	Addr     string `json:"addr"`
+	Interval int    `json:"interval"`
+	Timeout  int    `json:"timeout"`
 }
 
 type MasterConfig struct {
@@ -27,11 +35,11 @@ type SlaveConfig struct {
 }
 
 type GlobalConfig struct {
-	Debug    bool          `json:"debug"`
-	Interval int           `json:"interval"`
-	Http     *HttpConfig   `json:"http"`
-	Master   *MasterConfig `json:"master"`
-	Slave    *SlaveConfig  `json:"slave"`
+	Debug    bool            `json:"debug"`
+	Http     *HttpConfig     `json:"http"`
+	Transfer *TransferConfig `json:"transfer"`
+	Master   *MasterConfig   `json:"master"`
+	Slave    *SlaveConfig    `json:"slave"`
 }
 
 var (
@@ -73,4 +81,12 @@ func ParseConfig(cfg string) {
 	config = &c
 
 	log.Println("g:ParseConfig, ok, ", cfg)
+}
+
+func Hostname() (string, error) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		log.Println("ERROR: os.Hostname() fail", err)
+	}
+	return hostname, err
 }
