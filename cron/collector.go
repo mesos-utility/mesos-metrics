@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -39,6 +40,9 @@ func collect(sev []*g.ServiceConfig) {
 		mvs := []*model.MetricValue{}
 		for _, srv := range g.Config().Services {
 			if !srv.Enable {
+				if g.Config().Debug {
+					log.Printf("[Notice]: %s not enabled!!!", srv.Type)
+				}
 				continue
 			}
 
@@ -46,6 +50,7 @@ func collect(sev []*g.ServiceConfig) {
 			srvtype := srv.Type
 			resp, err := http.Get(addr)
 			if err != nil {
+				log.Println("get mesos metric data fail", err)
 				continue
 			}
 			defer resp.Body.Close()
@@ -53,12 +58,14 @@ func collect(sev []*g.ServiceConfig) {
 			// read json http response
 			jsonData, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
+				log.Println("read mesos metric fail", err)
 				continue
 			}
 
 			var f interface{}
 			err = json.Unmarshal(jsonData, &f)
 			if err != nil {
+				log.Println("Unmarshal metric data fail", err)
 				continue
 			}
 

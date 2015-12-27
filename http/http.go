@@ -76,9 +76,3 @@ func AutoRender(w http.ResponseWriter, data interface{}, err error) {
 	}
 	RenderDataJson(w, data)
 }
-
-func debugInfo(debug bool, msg string) {
-	if debug {
-		log.Println(msg)
-	}
-}
