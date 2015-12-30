@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mesos-utility/mesos-metrics/g"
 	"github.com/open-falcon/common/model"
-	"github.com/soarpenguin/mesos-metrics/g"
 )
 
 func Collect() {

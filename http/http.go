@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/soarpenguin/mesos-metrics/g"
+	"github.com/mesos-utility/mesos-metrics/g"
 )
 
 type Dto struct {

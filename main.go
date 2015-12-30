@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/soarpenguin/mesos-metrics/cron"
-	"github.com/soarpenguin/mesos-metrics/g"
-	mhttp "github.com/soarpenguin/mesos-metrics/http"
+	"github.com/mesos-utility/mesos-metrics/cron"
+	"github.com/mesos-utility/mesos-metrics/g"
+	mhttp "github.com/mesos-utility/mesos-metrics/http"
 )
 
 func handleVersion(displayVersion bool) {

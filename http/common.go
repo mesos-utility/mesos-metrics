@@ -5,7 +5,7 @@ import (
 	"github.com/toolkits/file"
 	"net/http"
 
-	"github.com/soarpenguin/mesos-metrics/g"
+	"github.com/mesos-utility/mesos-metrics/g"
 )
 
 func configCommonRoutes() {
