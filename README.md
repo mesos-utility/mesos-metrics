@@ -9,9 +9,13 @@ mesos集群监控脚本
 --------------------------------
 获取mesos集群API接口数据，解析返回结果，将key组装成json后push到falcon-agent
 接口解释请参照:
-     http://mesos.mydoc.io/
+ * http://mesos.apache.org/documentation/latest/monitoring/
+ * http://mesos.mydoc.io/
 
 使用方法
 --------------------------------
-1. 根据实际部署情况，配置采集master或slave数据;
+1. 根据实际部署情况，配置采集master或slave API接口;
+ * master: http://127.0.0.1:5050/metrics/snapshot
+ * slave:  http://127.0.0.1:5051/metrics/snapshot",
+
 2. 测试： ./control build && ./control start
