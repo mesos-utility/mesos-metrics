@@ -1,14 +1,11 @@
 package cron
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
-	"strings"
 	"time"
 
+	"github.com/mesos-utility/mesos-metrics/funcs"
 	"github.com/mesos-utility/mesos-metrics/g"
 	"github.com/open-falcon/common/model"
 )
@@ -25,7 +22,7 @@ func Collect() {
 	go collect(g.Config().Services)
 }
 
-func collect(sev []*g.ServiceConfig) {
+func collect(SrvCfgs []*g.ServiceConfig) {
 
 	// start collect data for mesos cluster.
 	for {
@@ -38,7 +35,7 @@ func collect(sev []*g.ServiceConfig) {
 		}
 
 		mvs := []*model.MetricValue{}
-		for _, srv := range g.Config().Services {
+		for _, srv := range SrvCfgs {
 			if !srv.Enable {
 				if g.Config().Debug {
 					log.Printf("[Notice]: %s not enabled!!!", srv.Type)
@@ -46,48 +43,10 @@ func collect(sev []*g.ServiceConfig) {
 				continue
 			}
 
-			addr := srv.Apiurl
-			srvtype := srv.Type
-			resp, err := http.Get(addr)
-			if err != nil {
-				log.Println("get mesos metric data fail", err)
-				continue
-			}
-			defer resp.Body.Close()
-
-			// read json http response
-			jsonData, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				log.Println("read mesos metric fail", err)
-				continue
-			}
-
-			var f interface{}
-			err = json.Unmarshal(jsonData, &f)
-			if err != nil {
-				log.Println("Unmarshal metric data fail", err)
-				continue
-			}
-
-			now := time.Now().Unix()
-			m := f.(map[string]interface{})
-			for k, v := range m {
-				key := fmt.Sprintf("mesos.%s", strings.Replace(k, "/", ".", -1))
-
-				metric := &model.MetricValue{
-					Endpoint:  hostname,
-					Metric:    key,
-					Value:     v,
-					Timestamp: now,
-					Step:      interval,
-					Type:      "GAUGE",
-					Tags:      srvtype,
-				}
-
-				mvs = append(mvs, metric)
-				//fmt.Printf("%v\n", metric)
-			}
+			mvs = funcs.CollectMetrics(hostname, srv)
 		}
+
 		g.SendToTransfer(mvs)
+		//fmt.Printf("%v\n", mvs)
 	}
 }
