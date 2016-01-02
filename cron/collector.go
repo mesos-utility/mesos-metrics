@@ -44,9 +44,11 @@ func collect(SrvCfgs []*g.ServiceConfig) {
 			}
 
 			mvs = funcs.CollectMetrics(hostname, srv)
+			if g.Config().Debug {
+				log.Printf("%v\n", mvs)
+			}
 		}
 
 		g.SendToTransfer(mvs)
-		//fmt.Printf("%v\n", mvs)
 	}
 }

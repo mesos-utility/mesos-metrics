@@ -73,7 +73,6 @@ func CollectMetrics(hostname string, srvCfg *g.ServiceConfig) []*model.MetricVal
 		}
 
 		mvs = append(mvs, metric)
-		fmt.Printf("%v\n", metric)
 	}
 
 	return mvs
