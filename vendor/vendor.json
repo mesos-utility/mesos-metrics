@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/open-falcon/common/model",
+			"revision": "42c166575d6d50da8aa70db38b35f8ea8b07cb18",
+			"revisionTime": "2015-10-22T11:32:31+08:00"
+		},
+		{
+			"path": "github.com/open-falcon/common/utils",
+			"revision": "42c166575d6d50da8aa70db38b35f8ea8b07cb18",
+			"revisionTime": "2015-10-22T11:32:31+08:00"
+		},
+		{
+			"path": "github.com/toolkits/file",
+			"revision": "ab007cd1c33919068b9b9538b5b4be22d833c5f1",
+			"revisionTime": "2015-06-05T16:43:03+08:00"
+		},
+		{
+			"path": "github.com/toolkits/net",
+			"revision": "4af4ba7be792e3d19bf094f9a9f465255c81a152",
+			"revisionTime": "2015-04-27T16:14:57+08:00"
+		},
+		{
+			"path": "github.com/toolkits/time",
+			"revision": "ba0362eddf11802c0da422d9ef34671051faa10f",
+			"revisionTime": "2015-06-09T07:37:05Z"
+		}
+	]
+}

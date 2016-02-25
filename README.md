@@ -19,3 +19,4 @@ mesos集群监控脚本
  * slave:  http://127.0.0.1:5051/metrics/snapshot",
 
 2. 测试： ./control build && ./control start
+ * $GOPATH/bin/govendor init && $GOPATH/bin/govendor add +external && GO15VENDOREXPERIMENT=1 go build
