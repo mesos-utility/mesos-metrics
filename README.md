@@ -1,5 +1,6 @@
 mesos集群监控脚本
 ================================
+[![Build Status](https://travis-ci.org/mesos-utility/mesos-metrics.svg?branch=master)](https://travis-ci.org/mesos-utility/mesos-metrics)
 
 系统需求
 --------------------------------
@@ -20,3 +21,4 @@ mesos集群监控脚本
 
 2. 测试： ./control build && ./control start
  * $GOPATH/bin/govendor init && $GOPATH/bin/govendor add +external && GO15VENDOREXPERIMENT=1 go build
+ * Attention: recommand go1.5 and above, use GO15VENDOREXPERIMENT and govendor for lib vcs.
