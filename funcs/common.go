@@ -22,6 +22,12 @@ func CollectMetrics(hostname string, srvCfg *g.ServiceConfig) []*model.MetricVal
 	srvtype := srvCfg.Type
 	resp, err := http.Get(addr)
 
+	if err != nil {
+		log.Println("get mesos metric data fail", err)
+		return nil
+	}
+	defer resp.Body.Close()
+
 	if srvtype == "master" {
 		stats = statsMaster
 	} else if srvtype == "slave" {
@@ -30,12 +36,6 @@ func CollectMetrics(hostname string, srvCfg *g.ServiceConfig) []*model.MetricVal
 		log.Println("not support server type!!!", err)
 		return nil
 	}
-
-	if err != nil {
-		log.Println("get mesos metric data fail", err)
-		return nil
-	}
-	defer resp.Body.Close()
 
 	// read json http response
 	jsonData, err := ioutil.ReadAll(resp.Body)
